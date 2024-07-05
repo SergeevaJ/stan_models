@@ -16,22 +16,22 @@ functions{
     real k0 = (1-frac)*dose/(tinf);
 
     if (t>tlag) {
-      real abs_cond=abs_ / V;
+      real abs_cond = abs_ / V;
     }
     else { 
-      real abs_cond=0;
+      real abs_cond = 0;
     }
 
     if (t<= tinf) {
-       real k0_cond=k0 / V; 
+       real k0_cond = k0 / V; 
     } 
     else { 
-      real k0_cond=0;
+      real k0_cond = 0;
     }
        
     vector[1] y;
 
-    y[1] = abs_cond+k0_cond-CL_V*x[1];
+    y[1] = abs_cond + k0_cond - CL_V*x[1];
     return y;
   }
 }

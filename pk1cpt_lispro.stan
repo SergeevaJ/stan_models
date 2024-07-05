@@ -9,7 +9,7 @@ functions{
     real tlag = parms[4];
     real tinf = parms[5];
     real frac = parms[6];
-    real dose =parms[7];
+    real dose = parms[7];
 
     real CL_V = CL / V;
     real abs_ = Ka*dose*frac;
@@ -63,12 +63,12 @@ transformed data{
   for (i in 1:nSubjects) nti[i] = end[i] - start[i] + 1;
   }
 parameters{
-  real<lower = 0, upper = 200> Ka_lis_hat;
-  real<lower = 0, upper = 200> CL_lis_hat;
-  real<lower = 0, upper = 200> V_lis_hat;
-  real<lower = 0, upper = 200> tlag_lis_hat;
-  real<lower = 0, upper = 200> tinf_lis_hat;
-real<lower = 0, upper = 1> frac_lis_hat;
+  array[nSubjects] real<lower = 0> Ka_lis_hat;
+  array[nSubjects] real<lower = 0> CL_lis_hat;
+  array[nSubjects] real<lower = 0> V_lis_hat;
+  array[nSubjects] real<lower = 0> tlag_lis_hat;
+  array[nSubjects] real<lower = 0> tinf_lis_hat;
+  array[nSubjects] real<lower = 0, upper=1>  frac_lis_hat;
 }
 
 transformed parameters{
@@ -124,11 +124,13 @@ model{
   tlag_lis_hat ~ lognormal(log(0.265), 0.01);
   tinf_lis_hat ~ lognormal(log(1.06), 0.01);
   frac_lis_hat ~ uniform(0, 1); 
-
-// how to transform cHat, how to define ThetaM.
+//  sigma ~ cauchy(0, 1);
+// how to transform cHat, how to define all thetas ThetaM.
 //how to deal with population
-//define differential equations
-
+//logCObs ~ normal(log(cHatObs), sigma);
+// for (i in 1 : nObs) {
+//      logCObs[(id - 1) * nObs + i] ~ normal(log(cHatObs[(id - 1) * nObs + i]),
+                                            sigma[id]);
 }
 
 

@@ -58,7 +58,7 @@ transformed data{
   int nTheta = 6; // number of estimated parameters
   int nCmt = 1; // number of compartments +1
   array[nSubjects] int nti; // number of obs for every subject
-  for(i in 1:nSubjects) nti[i] = end[i] - start[i] + 1;
+  for (i in 1:nSubjects) nti[i] = end[i] - start[i] + 1;
   }
 parameters{
   real<lower = 0, upper = 200> Ka_lis_hat;
@@ -83,7 +83,7 @@ array[nTheta+1] real<lower = 0> theta_d;
   thetaHat[5] = tinf_lis_hat;
   thetaHat[6] = frac_lis_hat;
 // how to define theta for all 
-  thetaM = rep_matrix(thetaHat, nSubjects)
+  thetaM = rep_matrix(thetaHat, nSubjects);
   for(j in 1:nSubjects)
   {
     theta[1] = thetaM[j, 1]; 

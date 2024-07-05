@@ -72,8 +72,9 @@ real<lower = 0, upper = 1> frac_lis_hat;
 }
 
 transformed parameters{
- // array[nTheta] real<lower = 0> theta;
-array[nTheta+1] real<lower = 0> theta_d;
+  array[nTheta] real<lower = 0> theta;
+  array[nTheta] real<lower = 0> ThetaHat;
+  array[nTheta+1] real<lower = 0> theta_d;
   matrix<lower = 0>[nCmt, nt] x;
   row_vector<lower = 0>[nt] cHat; // estimation of DV
   row_vector<lower = 0>[nObs] cHatObs; //

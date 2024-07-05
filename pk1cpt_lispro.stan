@@ -22,7 +22,7 @@ functions{
       real abs_cond=0;
     }
 
-    if (t<= ting) {
+    if (t<= tinf) {
        real k0_cond=k0 / V; 
     } 
     else { 

@@ -73,7 +73,7 @@ real<lower = 0, upper = 1> frac_lis_hat;
 
 transformed parameters{
   array[nTheta] real<lower = 0> theta;
-  array[nTheta] real<lower = 0> thetaHat;
+  vector<lower = 0>[nTheta] = 0> thetaHat;
   matrix<lower = 0>[nSubjects, nTheta] thetaM;
   array[nTheta+1] real<lower = 0> theta_d;
   matrix<lower = 0>[nCmt, nt] x;

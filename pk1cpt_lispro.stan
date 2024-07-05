@@ -13,7 +13,7 @@ functions{
 
     real CL_V = CL / V;
     real abs_ = Ka*dose*frac;
-    real k0 = (1-frac)*dose/(tinf);
+    real k0 = (1-frac)*dose/tinf;
     real abs_cond=abs_;
     real k0_cond=k0;
 

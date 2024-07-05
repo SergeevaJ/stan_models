@@ -12,21 +12,21 @@ functions{
     real dose =parms[7];
 
     real CL_V = CL / V;
-    real abs = Ka*dose*frac;
+    real abs_ = Ka*dose*frac;
     real k0 = (1-frac)*dose/(tinf);
 
     if (t>tlag) {
-      abs_cond=abs / V;
+      real abs_cond=abs_ / V;
     }
     else { 
-      abs_cond=0;
+      real abs_cond=0;
     }
 
     if (t<= ting) {
-       k0_cond=k0 / V; 
+       real k0_cond=k0 / V; 
     } 
     else { 
-      k0_cond=0;
+      real k0_cond=0;
     }
        
     vector[1] y;

@@ -110,7 +110,7 @@ transformed parameters{
                                             ss[start[j]:end[j]],
 theta_d, 1e-5, 1e-8, 1e5);
                                        
-    cHat[start[j]:end[j]] = x[2, start[j]:end[j]] ./ theta[3]; // divide by V_lis
+    cHat[start[j]:end[j]] = x[1, start[j]:end[j]] ./ theta[3]; // divide by V_lis
   }
 
   cHatObs  = cHat[iObs];

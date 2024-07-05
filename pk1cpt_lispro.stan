@@ -93,8 +93,8 @@ array[nTheta+1] real<lower = 0> theta_d;
     theta[4] = thetaM[j, 4]; 
     theta[5] = thetaM[j, 5]; 
     theta[6] = thetaM[j, 6]; 
-    theta_d[1:6] = theta[1:6]
-    theta_d[7] = amt[start[j]] 
+    theta_d[1:6] = theta[1:6];
+    theta_d[7] = amt[start[j]]; 
 
     x[, start[j]:end[j]] = pmx_solve_rk45(ode_rhs, 1, time[start[j]:end[j]], 
                                             amt[start[j]:end[j]],

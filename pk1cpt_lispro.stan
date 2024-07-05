@@ -87,7 +87,7 @@ transformed parameters{
   thetaHat[5] = tinf_lis_hat;
   thetaHat[6] = frac_lis_hat;
 // how to define theta for all 
-  thetaM = rep_matrix(thetaHat, nSubjects);
+  thetaM = rep_matrix(thetaHat, nSubjects)';
   for(j in 1:nSubjects)
   {
     theta[1] = thetaM[j, 1]; 

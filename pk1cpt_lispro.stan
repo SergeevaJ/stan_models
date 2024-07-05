@@ -9,7 +9,7 @@ functions{
     real tlag = parms[4];
     real tinf = parms[5];
     real frac = parms[6];
-    real dose =params[7];
+    real dose =parms[7];
 
     real CL_V = CL / V;
     real abs = Ka*dose*frac;

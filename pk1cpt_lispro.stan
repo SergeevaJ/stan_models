@@ -73,8 +73,8 @@ parameters{
 }
 
 transformed parameters{
-  vector<lower = 0>[nTheta] thetaHat;
-  vector<lower = 0>[nTheta+1] theta_d;
+  array[nTheta] real<lower = 0> thetaHat;
+  array[nTheta+1] real<lower = 0> theta_d;
   matrix<lower = 0>[nCmt, nt] x;
   row_vector<lower = 0>[nt] cHat; // estimation of DV
   row_vector<lower = 0>[nObs] cHatObs; //

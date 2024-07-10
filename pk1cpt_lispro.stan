@@ -17,7 +17,7 @@ functions{
     } 
        
     vector[2] y;
-    y[1] = -Ka*x[1]
+    y[1] = -Ka*x[1];
     y[2] = Ka*x[1] + k0_cond - CL_V*x[2];
     return y;
   }

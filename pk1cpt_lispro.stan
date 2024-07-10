@@ -75,7 +75,7 @@ transformed parameters{
   amt = amt*frac_lis_hat;
   for(j in 1:nSubjects)
   { theta_d[1:5] = thetaHat[1:5]; 
-    theta_d[6] = amt[start[j]]
+    theta_d[6] = amt[start[j]];
 
     x[, start[j]:end[j]] = pmx_solve_rk45(ode_rhs, 1, time[start[j]:end[j]], 
                                             amt[start[j]:end[j]],

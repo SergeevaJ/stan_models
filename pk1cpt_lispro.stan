@@ -74,7 +74,7 @@ transformed parameters{
   tlag = tlag_lis_hat;
   thetaHat[4] = tinf_lis_hat;
   thetaHat[5] = frac_lis_hat;
-  amt_mod = amt
+  amt_mod = amt;
   amt_mod = amt_mod*thetaHat[5];
   for(j in 1:nSubjects)
   { theta_d[1:5] = thetaHat[1:5]; 

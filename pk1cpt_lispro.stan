@@ -84,7 +84,7 @@ transformed parameters{
   print(thetaHat);
   print(sigma);
   print(tlag);
-  
+  print(amt_mod);
   for(j in 1:nSubjects)
   { theta_d[1:5] = thetaHat[1:5]; 
     theta_d[6] = amt[start[j]];

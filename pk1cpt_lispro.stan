@@ -56,7 +56,7 @@ parameters{
   real<lower = 0> tlag_lis_hat;
   real<lower = 0> tinf_lis_hat;
   real<lower = 0, upper=1>  frac_lis_hat;
-  real sigma;
+  real <lower=0> sigma;
 }
 
 transformed parameters{

@@ -47,7 +47,8 @@ transformed data{
   int nCmt = 1; // number of compartments
   array[nSubjects] int nti; // number of obs for every subject
   for (i in 1:nSubjects) nti[i] = end[i] - start[i] + 1;
-  array[nCmt] real biovar = 1;
+  array[nCmt] real biovar; 
+  biovar[1]= 1;
   }
 parameters{
   real<lower = 0> Ka_lis_hat;
@@ -62,7 +63,7 @@ parameters{
 transformed parameters{
   array[nTheta-1] real<lower = 0> thetaHat;
   array[nTheta] real<lower = 0> theta_d;
-  real<lower=0> tlag;
+  array[nCmt] real<lower=0> tlag;
   array[nt] real amt_mod;
   matrix<lower = 0>[nCmt, nt] x;
   row_vector<lower = 0>[nt] cHat; // estimation of DV
@@ -71,7 +72,7 @@ transformed parameters{
   thetaHat[1] = Ka_lis_hat;
   thetaHat[2] = CL_lis_hat;
   thetaHat[3] = V_lis_hat;
-  tlag = tlag_lis_hat;
+  tlag[1] = tlag_lis_hat;
   thetaHat[4] = tinf_lis_hat;
   thetaHat[5] = frac_lis_hat;
   amt_mod=amt;

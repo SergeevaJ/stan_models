@@ -81,10 +81,10 @@ transformed parameters{
   for (ind in start)
   {amt_mod[ind]=amt[ind]*frac_lis_hat;}
 
-  print(thetaHat);
-  print(sigma);
-  print(tlag);
-  print(amt_mod);
+  //print(thetaHat);
+  //print(sigma);
+  //print(tlag);
+  //print(amt_mod);
   for(j in 1:nSubjects)
   { theta_d[1:5] = thetaHat[1:5]; 
     theta_d[6] = amt[start[j]];
@@ -103,6 +103,8 @@ theta_d, biovar, tlag, 1e-5, 1e-8, 1e5);
   }
 
   cHatObs  = cHat[iObs];
+  print(cHat);
+  print(x);
 }
 
 model{

@@ -1,6 +1,5 @@
 // One compartment model with zero- and first-order absorption for insulin lispro pharmokinetic data
 functions{
-//dose must be included into params as 7th param!!!!!
   vector ode_rhs(real t, vector x, array[] real parms, array[] real
                  x_r, array[] int x_i){
     real Ka = parms[1];
@@ -9,31 +8,17 @@ functions{
     real tlag = parms[4];
     real tinf = parms[5];
     real frac = parms[6];
-    real dose = parms[7];
-
+    //dose must be multiplied by frac
     real CL_V = CL / V;
-    real abs_ = Ka*dose*frac;
-    real k0 = (1-frac)*dose/tinf;
-    real abs_cond=abs_;
-    real k0_cond=k0;
+    real k0 = (1-frac)*dose/(tinf*V);
 
-    if (t>tlag) {
-      abs_cond = abs_ / V;
-    }
-    else { 
-      abs_cond = 0;
-    }
-
-    if (t<= tinf) {
-       k0_cond = k0 / V; 
+    if (t>= tinf) {
+       k0_cond = 0;
     } 
-    else { 
-      k0_cond = 0;
-    }
        
-    vector[1] y;
-
-    y[1] = abs_cond + k0_cond - CL_V*x[1];
+    vector[2] y;
+    y[1] = -Ka*x[1]
+    y[2] = Ka*x[1] + k0_cond - CL_V*x[2];
     return y;
   }
 }
@@ -74,7 +59,7 @@ parameters{
 
 transformed parameters{
   array[nTheta] real<lower = 0> thetaHat;
-  array[nTheta+1] real<lower = 0> theta_d;
+  array[nTheta] real<lower = 0> theta_d;
   matrix<lower = 0>[nCmt, nt] x;
   row_vector<lower = 0>[nt] cHat; // estimation of DV
   row_vector<lower = 0>[nObs] cHatObs; //
@@ -86,8 +71,7 @@ transformed parameters{
   thetaHat[5] = tinf_lis_hat;
   thetaHat[6] = frac_lis_hat;
   for(j in 1:nSubjects)
-  { theta_d[1:6] = thetaHat[1:6];
-    theta_d[7] = amt[start[j]]; 
+  { theta_d[1:6] = thetaHat[1:6]; 
 
     x[, start[j]:end[j]] = pmx_solve_rk45(ode_rhs, 1, time[start[j]:end[j]], 
                                             amt[start[j]:end[j]],
@@ -99,7 +83,7 @@ transformed parameters{
                                             ss[start[j]:end[j]],
 theta_d, 1e-5, 1e-8, 1e5);
                                        
-    cHat[start[j]:end[j]] = x[1, start[j]:end[j]] ./ theta_d[3]; // divide by V_lis
+    cHat[start[j]:end[j]] = x[2, start[j]:end[j]] ./ theta_d[3]; // divide by V_lis
   }
 
   cHatObs  = cHat[iObs];

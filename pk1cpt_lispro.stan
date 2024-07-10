@@ -34,7 +34,7 @@ data{
   array[nt] int evid; //EVID
   array[nt] int addl; // n, zeros
   array[nt] int ss; // n, zeros
-  array[nt] real amt; //AMT
+  vector[nt] amt; //AMT
   array[nt] real time; //TIME
   array[nt] real rate; // n, zeros
   array[nt] real ii; // n, zeros

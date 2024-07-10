@@ -63,7 +63,6 @@ transformed parameters{
   array[nTheta-1] real<lower = 0> thetaHat;
   array[nTheta] real<lower = 0> theta_d;
   real<lower=0> tlag;
-  vector[nt] amt_mod; 
   matrix<lower = 0>[nCmt, nt] x;
   row_vector<lower = 0>[nt] cHat; // estimation of DV
   row_vector<lower = 0>[nObs] cHatObs; //
@@ -74,14 +73,14 @@ transformed parameters{
   tlag = tlag_lis_hat;
   thetaHat[4] = tinf_lis_hat;
   thetaHat[5] = frac_lis_hat;
-  amt_mod = amt;
-  amt_mod = amt_mod*thetaHat[5];
+  for (ind in start)
+  {amt[ind]=amt[ind]*frac_lis_hat}
   for(j in 1:nSubjects)
   { theta_d[1:5] = thetaHat[1:5]; 
     theta_d[6] = amt[start[j]];
 
     x[, start[j]:end[j]] = pmx_solve_rk45(ode_rhs, 1, time[start[j]:end[j]], 
-                                            amt_mod[start[j]:end[j]],
+                                            amt[start[j]:end[j]],
                                             rate[start[j]:end[j]],
                                             ii[start[j]:end[j]],
                                             evid[start[j]:end[j]],

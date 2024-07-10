@@ -1,4 +1,4 @@
-// One compartment model with zero- and first-order absorption for insulin lispro pharmokinetic data
+// One compartment model with zero- and first-order absorption for insulin lispro pharmacokinetic data
 functions{
   vector ode_rhs(real t, vector x, array[] real parms, array[] real
                  x_r, array[] int x_i){
@@ -47,6 +47,8 @@ transformed data{
   array[nSubjects] int nti; // number of obs for every subject
   for (i in 1:nSubjects) nti[i] = end[i] - start[i] + 1;
   }
+  real biovar = 1;
+  
 parameters{
   real<lower = 0> Ka_lis_hat;
   real<lower = 0> CL_lis_hat;
@@ -58,8 +60,8 @@ parameters{
 }
 
 transformed parameters{
-  array[nTheta] real<lower = 0> thetaHat;
-  array[nTheta] real<lower = 0> theta_d;
+  array[nTheta-1] real<lower = 0> thetaHat;
+  array[nTheta-1] real<lower = 0> theta_d;
   matrix<lower = 0>[nCmt, nt] x;
   row_vector<lower = 0>[nt] cHat; // estimation of DV
   row_vector<lower = 0>[nObs] cHatObs; //
@@ -67,11 +69,11 @@ transformed parameters{
   thetaHat[1] = Ka_lis_hat;
   thetaHat[2] = CL_lis_hat;
   thetaHat[3] = V_lis_hat;
-  thetaHat[4] = tlag_lis_hat;
-  thetaHat[5] = tinf_lis_hat;
-  thetaHat[6] = frac_lis_hat;
+  tlag = tlag_lis_hat;
+  thetaHat[4] = tinf_lis_hat;
+  thetaHat[5] = frac_lis_hat;
   for(j in 1:nSubjects)
-  { theta_d[1:6] = thetaHat[1:6]; 
+  { theta_d[1:5] = thetaHat[1:5]; 
 
     x[, start[j]:end[j]] = pmx_solve_rk45(ode_rhs, 1, time[start[j]:end[j]], 
                                             amt[start[j]:end[j]],
@@ -81,7 +83,7 @@ transformed parameters{
                                             cmt[start[j]:end[j]],
                                             addl[start[j]:end[j]],
                                             ss[start[j]:end[j]],
-theta_d, 1e-5, 1e-8, 1e5);
+theta_d, biovar, tlag, 1e-5, 1e-8, 1e5);
                                        
     cHat[start[j]:end[j]] = x[2, start[j]:end[j]] ./ theta_d[3]; // divide by V_lis
   }

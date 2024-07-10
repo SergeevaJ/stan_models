@@ -47,7 +47,7 @@ transformed data{
   int nCmt = 1; // number of compartments
   array[nSubjects] int nti; // number of obs for every subject
   for (i in 1:nSubjects) nti[i] = end[i] - start[i] + 1;
-  real biovar = 1;
+  array[nCmt] real biovar = 1;
   }
 parameters{
   real<lower = 0> Ka_lis_hat;

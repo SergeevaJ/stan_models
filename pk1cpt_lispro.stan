@@ -63,6 +63,7 @@ transformed parameters{
   array[nTheta-1] real<lower = 0> thetaHat;
   array[nTheta] real<lower = 0> theta_d;
   real<lower=0> tlag;
+  array[nt] real amt_mod;
   matrix<lower = 0>[nCmt, nt] x;
   row_vector<lower = 0>[nt] cHat; // estimation of DV
   row_vector<lower = 0>[nObs] cHatObs; //
@@ -73,8 +74,9 @@ transformed parameters{
   tlag = tlag_lis_hat;
   thetaHat[4] = tinf_lis_hat;
   thetaHat[5] = frac_lis_hat;
+  amt_mod=amt;
   for (ind in start)
-  {amt[ind]=amt[ind]*frac_lis_hat}
+  {amt_mod[ind]=amt[ind]*frac_lis_hat;}
   for(j in 1:nSubjects)
   { theta_d[1:5] = thetaHat[1:5]; 
     theta_d[6] = amt[start[j]];

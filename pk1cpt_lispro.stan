@@ -58,7 +58,7 @@ parameters{
   real<lower = 0> tlag_lis_hat;
   real<lower = 0> tinf_lis_hat;
   real<lower = 0, upper=1>  frac_lis_hat;
-  real <lower=0> sigma;
+  real <lower=0, upper=10000> sigma;
 }
 
 transformed parameters{
@@ -108,7 +108,7 @@ model{
   tlag_lis_hat ~ lognormal(log(0.265), 0.01);
   tinf_lis_hat ~ lognormal(log(1.06), 0.01);
   frac_lis_hat ~ uniform(0, 1); 
-  sigma ~ cauchy(0, 1);
+  sigma ~ uniform(0, 10000);
 
   logCObs ~ normal(log(cHatObs), sigma);
 }

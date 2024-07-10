@@ -42,7 +42,7 @@ data{
 }
 
 transformed data{
-  vector[nObs] logCObs = log(cObs);
+  vector[nObs] logCObs = log(cObs+10^-10);
   int nTheta = 6; // number of estimated parameters
   int nCmt = 1; // number of compartments
   array[nSubjects] int nti; // number of obs for every subject
@@ -99,9 +99,9 @@ theta_d, biovar, tlag, 1e-5, 1e-8, 1e5);
     cHat[start[j]:end[j]] = x[2, start[j]:end[j]] ./ theta_d[3]; // divide by V_lis
   }
 
-  cHatObs  = cHat[iObs];
-  print(log(cHatObs));
-  print(logCObs);
+  cHatObs  = cHat[iObs]+10^-10;
+  //print(log(cHatObs));
+  //print(logCObs);
 }
 
 model{

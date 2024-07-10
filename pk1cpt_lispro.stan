@@ -5,10 +5,10 @@ functions{
     real Ka = parms[1];
     real CL = parms[2];
     real V = parms[3];
-    real tlag = parms[4];
-    real tinf = parms[5];
-    real frac = parms[6];
-    real dose = parms[7];
+  
+    real tinf = parms[4];
+    real frac = parms[5];
+    real dose = parms[6];
     //dose must be multiplied by frac
     real CL_V = CL / V;
     real k0 = (1-frac)*dose/(tinf*V);

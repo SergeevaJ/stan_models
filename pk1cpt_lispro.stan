@@ -82,7 +82,7 @@ transformed parameters{
     theta_d[6] = amt[start[j]];
 
     x[, start[j]:end[j]] = pmx_solve_rk45(ode_rhs, 1, time[start[j]:end[j]], 
-                                            amt[start[j]:end[j]],
+                                            amt_mod[start[j]:end[j]],
                                             rate[start[j]:end[j]],
                                             ii[start[j]:end[j]],
                                             evid[start[j]:end[j]],

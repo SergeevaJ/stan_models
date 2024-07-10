@@ -9,9 +9,9 @@ functions{
     real tinf = parms[4];
     real frac = parms[5];
     real dose = parms[6];
-    //dose must be multiplied by frac
     real CL_V = CL / V;
-    real k0 = (1-frac)*dose/(tinf*V);
+    //(1-frac)*dose goes to zero-order absorption
+    real k0 = (1-frac)*dose/tinf;
 
     if (t>= tinf) {
        k0 = 0;
@@ -28,8 +28,8 @@ data{
   int<lower = 1> nObs; //n-k - number of measurements
   int<lower = 1> nSubjects; // k - number of studies 
   array[nObs] int<lower = 1> iObs; //n-k, index of observations - array of measurement indexes  
-  array[nSubjects] int<lower = 1> start; //k, array of indexes where start every new subject 
-  array[nSubjects] int<lower = 1> end; //k, array of indexes where end every new subject 
+  array[nSubjects] int<lower = 1> start; //k, array of indexes where starts every new subject 
+  array[nSubjects] int<lower = 1> end; //k, array of indexes where ends every new subject 
   array[nt] int<lower = 1> cmt; //CMT
   array[nt] int evid; //EVID
   array[nt] int addl; // n, zeros
@@ -42,14 +42,14 @@ data{
 }
 
 transformed data{
-  vector[nObs] logCObs = log(cObs+10^-10);
+  vector[nObs] logCObs = log(cObs+10^-10); //added small value to cObs, because at t=0 cObs is zero and log(cObs) is -inf
   int nTheta = 6; // number of estimated parameters
   int nCmt = 1; // number of compartments
   array[nSubjects] int nti; // number of obs for every subject
   for (i in 1:nSubjects) nti[i] = end[i] - start[i] + 1;
   array[nCmt+1] real biovar; 
-  biovar[1]= 1;
-  biovar[2]=1;
+  biovar[1] = 1;
+  biovar[2] = 1;
   }
 parameters{
   real<lower = 0> Ka_lis_hat;
@@ -68,7 +68,7 @@ transformed parameters{
   array[nt] real amt_mod;
   matrix<lower = 0>[nCmt+1, nt] x;
   row_vector<lower = 0>[nt] cHat; // estimation of DV
-  row_vector<lower = 0>[nObs] cHatObs; //
+  row_vector<lower = 0>[nObs] cHatObs; 
 
   thetaHat[1] = Ka_lis_hat;
   thetaHat[2] = CL_lis_hat;
@@ -77,6 +77,7 @@ transformed parameters{
   tlag[2] = tlag_lis_hat;
   thetaHat[4] = tinf_lis_hat;
   thetaHat[5] = frac_lis_hat;
+  // multiply amt (dose) by frac, because this part goes through 1-order absorption
   amt_mod=amt;
   for (ind in start)
   {amt_mod[ind]=amt[ind]*frac_lis_hat;}
@@ -96,12 +97,10 @@ transformed parameters{
                                             ss[start[j]:end[j]],
 theta_d, biovar, tlag, 1e-5, 1e-8, 1e5);
                                        
-    cHat[start[j]:end[j]] = x[2, start[j]:end[j]] ./ theta_d[3]; // divide by V_lis
+    cHat[start[j]:end[j]] = x[2, start[j]:end[j]] ./ theta_d[3]; // divide by V
   }
 
   cHatObs  = cHat[iObs]+10^-10;
-  //print(log(cHatObs));
-  //print(logCObs);
 }
 
 model{

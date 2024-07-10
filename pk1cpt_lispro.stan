@@ -8,6 +8,7 @@ functions{
     real tlag = parms[4];
     real tinf = parms[5];
     real frac = parms[6];
+    real dose = parms[7];
     //dose must be multiplied by frac
     real CL_V = CL / V;
     real k0 = (1-frac)*dose/(tinf*V);
@@ -60,7 +61,7 @@ parameters{
 
 transformed parameters{
   array[nTheta-1] real<lower = 0> thetaHat;
-  array[nTheta-1] real<lower = 0> theta_d;
+  array[nTheta] real<lower = 0> theta_d;
   matrix<lower = 0>[nCmt, nt] x;
   row_vector<lower = 0>[nt] cHat; // estimation of DV
   row_vector<lower = 0>[nObs] cHatObs; //
@@ -74,6 +75,7 @@ transformed parameters{
   amt = amt*frac_lis_hat;
   for(j in 1:nSubjects)
   { theta_d[1:5] = thetaHat[1:5]; 
+    theta_d[6] = amt[start[j]]
 
     x[, start[j]:end[j]] = pmx_solve_rk45(ode_rhs, 1, time[start[j]:end[j]], 
                                             amt[start[j]:end[j]],

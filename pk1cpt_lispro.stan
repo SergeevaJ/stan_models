@@ -100,8 +100,8 @@ theta_d, biovar, tlag, 1e-5, 1e-8, 1e5);
   }
 
   cHatObs  = cHat[iObs]+10^-10;
-  //print(log(cHatObs));
-  //print(logCObs);
+  print(log(cHatObs));
+  print(logCObs);
 }
 
 model{

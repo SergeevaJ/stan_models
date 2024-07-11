@@ -30,7 +30,7 @@ data{
   array[nObs] int<lower = 1> iObs; //n-k, index of observations - array of measurement indexes  
   array[nSubjects] int<lower = 1> start; //k, array of indexes where starts every new subject 
   array[nSubjects] int<lower = 1> end; //k, array of indexes where ends every new subject 
-  array[nt] int<lower = 1> cmt; //CMT
+  array[nt] int<lower = 1> cmt; //CMT, 1 - dose "compartment", 2 - main compartment
   array[nt] int evid; //EVID
   array[nt] int addl; // n, zeros
   array[nt] int ss; // n, zeros
@@ -44,10 +44,10 @@ data{
 transformed data{
   vector[nObs] logCObs = log(cObs+10^-10); //added small value to cObs, because at t=0 cObs is zero and log(cObs) is -inf
   int nTheta = 6; // number of estimated parameters
-  int nCmt = 1; // number of compartments
+  int nCmt = 2; // number of compartments +1 (dose "compartment")
   array[nSubjects] int nti; // number of obs for every subject
   for (i in 1:nSubjects) nti[i] = end[i] - start[i] + 1;
-  array[nCmt+1] real biovar; 
+  array[nCmt] real biovar; 
   biovar[1] = 1;
   biovar[2] = 1;
   }
@@ -64,9 +64,9 @@ parameters{
 transformed parameters{
   array[nTheta-1] real<lower = 0> thetaHat;
   array[nTheta] real<lower = 0> theta_d;
-  array[nCmt+1] real<lower=0> tlag;
+  array[nCmt] real<lower=0> tlag;
   array[nt] real amt_mod;
-  matrix<lower = 0>[nCmt+1, nt] x;
+  matrix<lower = 0>[nCmt, nt] x;
   row_vector<lower = 0>[nt] cHat; // estimation of DV
   row_vector<lower = 0>[nObs] cHatObs; 
 

@@ -50,6 +50,7 @@ transformed data{
   array[nCmt] real biovar; 
   biovar[1] = 1;
   biovar[2] = 1;
+  real fixed_frac = 0.729;
   }
 parameters{
   real<lower = 0> Ka_lis_hat;
@@ -57,7 +58,6 @@ parameters{
   real<lower = 0> V_lis_hat;
   real<lower = 0> tlag_lis_hat;
   real<lower = 0> tinf_lis_hat;
-  real<lower = 0, upper=1>  frac_lis_hat;
   real <lower=0, upper=10000> sigma;
 }
 
@@ -76,11 +76,11 @@ transformed parameters{
   tlag[1] = tlag_lis_hat;
   tlag[2] = tlag_lis_hat;
   thetaHat[4] = tinf_lis_hat;
-  thetaHat[5] = frac_lis_hat;
+  thetaHat[5] = fixed_frac;
   // multiply amt (dose) by frac, because this part goes through 1-order absorption
   amt_mod=amt;
   for (ind in start)
-  {amt_mod[ind]=amt[ind]*frac_lis_hat;}
+  {amt_mod[ind]=amt[ind]*fixed_frac;}
 
 
   for(j in 1:nSubjects)
@@ -110,7 +110,6 @@ model{
   V_lis_hat ~ lognormal(log(43), 0.5);
   tlag_lis_hat ~ lognormal(log(0.265), 0.01);
   tinf_lis_hat ~ lognormal(log(1.06), 0.01);
-  frac_lis_hat ~ uniform(0, 1); 
   sigma ~ uniform(0, 10000);
 
   logCObs ~ normal(log(cHatObs), sigma);

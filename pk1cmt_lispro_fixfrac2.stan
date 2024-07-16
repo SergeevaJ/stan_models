@@ -11,15 +11,15 @@ functions{
     real dose = parms[6];
     real CL_V = CL / V;
     //(1-frac)*dose goes to zero-order absorption
-    real k0 = (1-frac)*dose/tinf;
+    //real k0 = (1-frac)*dose/tinf;
 
-    if (t>= tinf) {
+    //if (t>= tinf) {
        k0 = 0;
     } 
        
     vector[2] y;
     y[1] = -Ka*x[1];
-    y[2] = Ka*x[1] + k0 - CL_V*x[2];
+    y[2] = Ka*x[1] - CL_V*x[2];
     return y;
   }
 }

@@ -50,7 +50,7 @@ transformed data{
   array[nCmt] real biovar; 
   biovar[1] = 1;
   biovar[2] = 1;
-  real fixed_frac = 0.729;
+  real fixed_frac = 1;
   }
 parameters{
   real<lower = 0> Ka_lis_hat;

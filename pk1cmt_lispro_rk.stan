@@ -106,8 +106,8 @@ theta_d, biovar, tlag, 1e-5, 1e-8, 1e5);
 model{
   // Prior
   Ka_lis_hat ~ lognormal(log(0.989), 0.03);
-  CL_lis_hat ~ lognormal(log(30.5), 0.5);
-  V_lis_hat ~ lognormal(log(43), 0.5);
+  CL_lis_hat ~ lognormal(log(96), 0.5);
+  V_lis_hat ~ lognormal(log(70), 0.5);
   tlag_lis_hat ~ lognormal(log(0.265), 0.01);
   tinf_lis_hat ~ lognormal(log(1.06), 0.01);
   frac_lis_hat ~ uniform(0, 1); 
